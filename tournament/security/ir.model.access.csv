@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tournament,tournament.user,model_tournament,tournament.group_tournament_user,1,0,0,0
+access_tournament,tournament.manager,model_tournament,tournament.group_tournament_manager,1,1,1,1
+access_tournament_team,tournament.team.user,model_tournament_team,tournament.group_tournament_user,1,0,0,0
+access_tournament_team,tournament.team.manager,model_tournament_team,tournament.group_tournament_manager,1,1,1,1
+access_tournament_match,tournament.match.user,model_tournament_match,tournament.group_tournament_user,1,0,0,0
+access_tournament_match,tournament.match.manager,model_tournament_match,tournament.group_tournament_manager,1,1,1,1
+access_tournament_set,tournament.set.user,model_tournament_set,tournament.group_tournament_user,1,0,0,0
+access_tournament_set,tournament.set.manager,model_tournament_set,tournament.group_tournament_manager,1,1,1,1

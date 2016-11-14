@@ -1,0 +1,19 @@
+Organise your tournament !
+
+singles
+later:
+    doubles
+    multi-categories
+    pools
+    Tête de séries
+
+Use res.partners for participants
+custom tree view (maybe inheritance from kanban ?), handle search -> update avg start time
+list view by start time 
+
+to set up : tournament (-> categories) -> type (#sets), need avg match time, number of fields, participants, ranking
+
+match states : draft, confirmed, playing, done, cancelled - handle bye/walkover
+
+more to come.
+
