@@ -231,8 +231,9 @@ class TournamentSet(models.Model):
     score_2 = fields.Integer(string='Team 2 score')
     match_id = fields.Many2one('tournament.match', string='Match')
 
-    @api.onchange('score_1', 'score_2')
-    def _onchange_score_2(self):
+    @api.depends('score_1', 'score_2', 'match_id')
+    def _verify_winner(self):
+        import ipdb; ipdb.set_trace()
         if self.score_1 and self.score_2:
             self.match_id.check_result()
 

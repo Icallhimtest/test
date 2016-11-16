@@ -18,7 +18,7 @@
         <field name="arch" type="xml">
             <form string="Match" create="false">
                 <group>
-                    <field name="winner_id" invisible="1"/>
+                    <field name="winner_id"/>  <!-- invisible="1" -->
                     <field name="tournament_id"/>
                     <field name="match_round"/> <!-- TODO create pretty name -->
                     <field name="start_date" attrs="{'invisible': [('start_date', '=', False)]}"/>
@@ -27,7 +27,7 @@
                 <group><field name="first_team_id"/></group>
                 <group><field name="second_team_id"/></group>
                 <field name="set_ids" mode="tree">
-                    <tree string="Sets"> <!-- decoration-info="(move_check == False)" create="false"-->
+                    <tree string="Sets" editable="true"> <!-- decoration-info="(move_check == False)" create="false"-->
                         <field name="score_1"/>
                         <field name="score_2"/>
                     </tree>

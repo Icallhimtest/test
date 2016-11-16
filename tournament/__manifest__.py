@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+# Part of Odoo. See LICENSE file for full copyright and licensing details. Or not.
 {
     'name': 'Tournament',
     'category': 'Tournament',
@@ -12,7 +12,7 @@ Organise your Tournament
 
 Organise your tournament, have a complete schedule with match times ready to use in a few seconds.
         """,
-    'depends': ['base'],
+    'depends': ['base', 'mail', 'report'],
     'data': [
         'security/tournament_security.xml',
         'security/ir.model.access.csv',
