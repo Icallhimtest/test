@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="account assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/tournament/static/src/less/tournament.less"/><!-- 
+            <link rel="stylesheet" href="/account/static/src/css/account.css"/>
+            <link rel="stylesheet" href="/account/static/src/less/account_reconciliation.less"/>
+            <link rel="stylesheet" href="/account/static/src/less/account_journal_dashboard.less"/> -->
+
+            <script type="text/javascript" src="/tournament/static/src/js/score_widget.js"></script>
+            <!-- <script type="text/javascript" src="/account/static/src/js/move_line_quickadd.js"></script>
+            <script type="text/javascript" src="/account/static/src/js/account_payment_widget.js"></script>  -->
+        </xpath>
+    </template>
+</odoo>

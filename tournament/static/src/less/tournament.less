@@ -1,0 +1,136 @@
+/*.o_kanban_view .oe_kanban_color_11 {
+    background-color: lightgreen;
+    color: black;
+}*/
+@tournament-kanban-background = #FFFFFF;
+
+.o_tournament_match_kanban .o_tournament_match_loser {
+    opacity: 0.5;
+}
+.o_tournament_match_kanban .o_tournament_match_winner {
+    font-weight: bold;
+}
+.o_tournament_match_kanban .o_tournament_match_winner {
+    font-weight: bold;
+}
+.o_kanban_views .o_tournament_match_kanban {
+    &.o_kanban_grouped {
+        min-height: 100%;
+        padding: 0 0px;
+        .o_kanban_record {
+            width: 100%;
+            margin: 0px;
+        }
+    }
+    .o_kanban_record {
+        .clearfix();
+        &:after, &:before {
+            width: 0;
+            height: 0;
+        }
+
+        position: relative;
+        min-width: 150px;
+        margin: 4px;
+
+        .o_kanban_image {
+            float: left;
+            width: @o-kanban-image-width;
+
+            + div {
+                padding-left: @o-kanban-image-width + @o-kanban-inside-hgutter;
+                @media (max-width: @screen-xs-max) {
+                    padding-left:  @o-kanban-image-width + @o-kanban-inside-hgutter-mobile;
+                }
+            }
+        }
+
+        .oe_kanban_details {
+            width: 100%;
+            > ul {
+                margin-bottom: 0;
+            }
+        }
+
+        .o_dropdown_kanban {
+            float: right;
+            @media (max-width: @screen-xs-max) {
+                visibility: visible;
+            }
+
+            // Open the dropdown a the left side of the dropdown toggle
+            > .dropdown-menu {
+                left: auto;
+                right: 0;
+                padding: 3px;
+            }
+        }
+
+        .o_kanban_footer {
+            .o-flex-display();
+            .o-justify-content(space-between);
+            .o-align-items(center);
+            > * {
+                .o-flex(0, 0, auto);
+            }
+        }
+
+        .oe_kanban_footer_left {
+            float: left;
+        }
+
+        .oe_kanban_bottom_right {
+            float: right;
+        }
+
+        .oe_kanban_bottom_left {
+            float: left;
+            .oe_kanban_align {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .o_kanban_tags {
+            margin: 0 0 @o-kanban-inside-vgutter -@o-kanban-inside-hgutter;
+            @media (max-width: @screen-xs-max) {
+                margin-left:  -@o-kanban-inside-hgutter-mobile;
+            }
+            max-height: 9px;
+            .o_tag {
+                width: 40px;
+                height: 9px;
+                display: inline-block;
+                vertical-align: top;
+                opacity: 0.7;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+        .o_form_field_many2manytags {
+            display: block;
+        }
+        .oe_kanban_text_red {
+            color: #A61300;
+            font-weight: bold;
+        }
+    }
+
+    .o_kanban_group {
+        background-color: @tournament-kanban-background;
+        &:nth-child(odd) {
+            background-color: darken(@tournament-kanban-background, 3%);
+        }
+    }
+}
+
+.o_kanban_view .o_kanban_group:nth-child(odd)
+/*.o_kanban_view .oe_kanban_color_12 {
+    background-color: grey;
+}
+.o_kanban_view .oe_kanban_color_13 {
+    background-color: grey;
+}
+*/

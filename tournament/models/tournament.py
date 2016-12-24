@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import json
 import math
+import random
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class Tournament(models.Model):
@@ -12,10 +14,10 @@ class Tournament(models.Model):
     _order = 'id desc'
     # will inherit mail.thread prolly
 
-    name = fields.Char(string='Tournament Name')
+    name = fields.Char(string='Tournament Name', required=True)
     match_type = fields.Selection([
         ('basic', 'Basic'),
-        ('sets', 'Sets')], string='Match Type', readonly=True, states={'draft': [('readonly', False)]},
+        ('sets', 'Sets')], string='Match Type', readonly=True, states={'draft': [('readonly', False)]}, required=True, default='basic',
         help='How matches are won:\n' # TODO fix this display shit \t,n doesn't work
              '\tBasic: basic win - lose'
              '\tSets: matches are won by winning a certain number of sets')
@@ -24,10 +26,10 @@ class Tournament(models.Model):
         ('draft', 'Draft'),
         ('open', 'Open'),
         ('closed', 'Closed'),
-        ('done', 'Done')], default='draft', string='Tournament State')
+        ('done', 'Done')], default='draft', string='Tournament State', required=True)
 
     # schedule related fields
-    time_organisation = fields.Boolean(string='Schedule the Matches', help='If checked, all matches will have a starting time.')
+    time_organisation = fields.Boolean(string='Schedule the Matches', help='Check this to have match start times generated automatically.')
     start_date = fields.Datetime(string='Start Date')
     # maybe add date end and second start to handle 2-day events (weekends)
     avg_match_time = fields.Integer(string='Estimated Match Time', readonly=True, states={'draft': [('readonly', False)]})
@@ -85,21 +87,23 @@ class Tournament(models.Model):
                 # check if this works, or if I have to go through (0, 0, vals)
                 match = self.env['tournament.match'].create({
                     'tournament_id': self.id,
-                    'match_round': -round_number,
-                    'set_ids': [(4, self.env['tournament.set'].create({}).id, 0)] if self.match_type == 'sets' else [],
+                    'match_round': -round_number - 1,
+                    'score': '[]',
                 })
                 match_ids.append(match.id)
                 if round_number > 0:
                     match.next_match_id = match_ids[(match_ids.index(match.id) - 1) / 2]
 
-        #assign teams to matches
+        # assign teams to matches
         team_ids = self.team_ids.ids
+        random.shuffle(team_ids)
         i = 0
         for match_id in match_ids[(2 ** (number_of_rounds - 1) - 1):]:
             match = self.env['tournament.match'].browse(match_id)
             match.first_team_id = self.env['tournament.team'].browse(team_ids[i])
             if self.number_of_teams > 2 ** (number_of_rounds - 1) + i:
                 match.second_team_id = self.env['tournament.team'].browse(team_ids[2 ** (number_of_rounds - 1) + i])
+            i += 1
 
         self.write({'state': 'closed'})
 
@@ -110,7 +114,7 @@ class Tournament(models.Model):
             player_list += team.player_ids.ids
         if len(player_list) != len(set(player_list)):
             duplicate_ids = [x for x in set(player_list) if player_list.count(x) >= 2] # TODO optimise this shit and imp the error msg
-            raise UserError(_('Player %s is present in multiple teams') % self.env['res.partner'].browse(duplicate_ids[0]).name)
+            raise ValidationError(_('Player %s is present in multiple teams') % self.env['res.partner'].browse(duplicate_ids[0]).name)
 
     def _verify_players_per_team(self):
         self.ensure_one()
@@ -167,47 +171,79 @@ class TournamentMatch(models.Model):
     #         return self._context.get('default_tournament_id')
 
     tournament_id = fields.Many2one('tournament', string='Tournament', required=True, readonly=True)
+    match_type = fields.Selection(related='tournament_id.match_type', readonly=True)
     first_team_id = fields.Many2one('tournament.team', string='Team 1', readonly=True)
     second_team_id = fields.Many2one('tournament.team', string='Team 2', readonly=True)
-    set_ids = fields.One2many('tournament.set', 'match_id', string='Score')
-    winner_id = fields.Many2one('tournament.team', string='Winner', readonly=True)
+    score = fields.Text(string='Score', default='[]') # need to make widget
+    winner_id = fields.Many2one('tournament.team', compute='_compute_winner_id', string='Winner', readonly=True, store=True)
     match_round = fields.Integer(string='Round', help='Rounds go from -x to 0 for the final', readonly=True)
     next_match_id = fields.Many2one('tournament.match', string='Next Match', readonly=True)
-    color = fields.Integer(string='Color Index')
+    previous_match_ids = fields.One2many('tournament.match', 'next_match_id', string='Previous Matches', readonly=True)
+    color = fields.Integer(string='Color Index', compute="_compute_color")
+    state = fields.Selection([
+        ('unstarted', 'Not Started'),
+        ('playing', 'Playing'),
+        ('done', 'Done')], string='Match status', required=True, default='unstarted', readonly=True)
 
     start_date = fields.Datetime(string='Start Date', compute='_compute_start_date', store=True)
 
     def _compute_start_date(self):
         pass
 
-    def assign_winner(self, team):
-        self.ensure_one()
-        if self.tournament_id.match_type == 'basic':
-            self.winner_id = self.first_team_id if team == 1 else self.second_team_id
+    @api.depends('state')
+    def _compute_color(self):
+        self.filtered(lambda match: match.state == 'unstarted').update({'color': 0})
+        self.filtered(lambda match: match.state == 'playing').update({'color': 6})
+        self.filtered(lambda match: match.state == 'done').update({'color': 1})
 
-    def check_result(self):
-        """ Looks at the score of the sets (from set_ids) and assigns a winner if enough sets are played.
-            If not enough sets were played, add a new set.
-            If too many (due to score modification) remove unnecessary sets.
-            If a winner is assigned, pass him on to the next round and assign tournament winner/runner-up if match was a final.
+    def write(self, vals):
+        res = super(TournamentMatch, self).write(vals)
+        if 'score' in vals:
+            self._check_winner()
+        return res
+
+    def _check_winner(self):
+        """ Look at the score and assign a winner if enough sets have been played.
+
+            If a winner is assigned, pass him on to the next round.
+            If the match is a final, assign the tournament winner/runner-up.
         """
-        self.ensure_one()
-        team_1_won = team_2_won = 0
-        self.winner_id = False
-        for set_id in self.set_ids:
-            if self.winner_id:
-                self.set_ids = [(2, set_id.id, 0)] # To Test, might mess up the iteration
+        for match in self:
+            score = json.loads(match.score)
+            if score and not (match.first_team_id and match.second_team_id):
+                match.write({'score': '[]'})
+                raise UserError(_("Teams must be defined before a score can be set."))
+            team_1_won_sets = team_2_won_sets = 0
+            match.winner_id = False
+            sets_to_win = match.tournament_id.sets_to_win if match.match_type == 'sets' else 1
+            for set_score in score:
+                if set_score[0] > set_score[1]:
+                    team_1_won_sets += 1
+                    if team_1_won_sets == sets_to_win:
+                        match.winner_id = match.first_team_id
+                elif set_score[0] < set_score[1]:
+                    team_2_won_sets += 1
+                    if team_2_won_sets == sets_to_win:
+                        match.winner_id = match.second_team_id
+                else:
+                    raise ValidationError(_("Can't have a set with same score for both teams!"))
+            if match.winner_id:
+                match.state = 'done'
+                match.prepare_next_match()
             else:
-                if set_id.score_1 >= set_id.score_2:
-                    team_1_won += 1
-                if set_id.score_1 <= set_id.score_2:
-                    team_2_won += 1
-                if max(team_1_won, team_2_won) == self.tournament_id.sets_to_win:
-                    self.winner_id = self.first_team_id if team_1_won >= team_2_won else self.second_team_id
-        if not self.winner_id:
-            self.set_ids = [(0, 0, {})]
-        else:
-            self.prepare_next_match()
+                match.state = 'playing'
+
+    def assign_winner_1(self, team):
+        self.ensure_one()
+        if self.tournament_id.match_type == 'sets':
+            raise UserError(_("Please describe the sets in order to assign a winner"))
+        self.score = '[[1,0]]'
+
+    def assign_winner_2(self, team):
+        self.ensure_one()
+        if self.tournament_id.match_type == 'sets':
+            raise UserError(_("Please describe the sets in order to assign a winner"))
+        self.score = '[[0,1]]'
 
     def prepare_next_match(self):
         """ A winner is assigned, he passes on to the next round or, if the match
@@ -218,24 +254,11 @@ class TournamentMatch(models.Model):
             self.tournament_id.winner_id = self.winner_id
             self.tournament_id.runner_up_id = self.first_team_id.id ^ self.winner_id.id ^ self.second_team_id.id
         else:
-            if not self.next_match_id.first_team_id:
-                self.next_match_id.first_team_id = self.winner_id
+            # in the hopes this will respect the order ... (though there is no guarantee on recordset orders)
+            if self.next_match_id.previous_match_ids[0].id == self.id:
+                self.next_match_id.write({'first_team_id': self.winner_id.id})
             else:
-                self.next_match_id.second_team_id = self.winner_id
-
-
-class TournamentSet(models.Model):
-    _name = "tournament.set"
-
-    score_1 = fields.Integer(string='Team 1 score')
-    score_2 = fields.Integer(string='Team 2 score')
-    match_id = fields.Many2one('tournament.match', string='Match')
-
-    @api.depends('score_1', 'score_2', 'match_id')
-    def _verify_winner(self):
-        import ipdb; ipdb.set_trace()
-        if self.score_1 and self.score_2:
-            self.match_id.check_result()
+                self.next_match_id.write({'second_team_id': self.winner_id.id})
 
 
 class Partner(models.Model):

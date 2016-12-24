@@ -17,22 +17,25 @@
         <field name="model">tournament.match</field>
         <field name="arch" type="xml">
             <form string="Match" create="false">
+                <field name="match_type" invisible="1"/>
+                <header>
+                    <button type="object" name="assign_winner_1" string="Team 1 won" class="oe_highlight" attrs="{'invisible': ['|', ('match_type', '=', 'sets'), ('state', '!=', 'unstarted')]}"/>
+                    <button type="object" name="assign_winner_2" string="Team 2 won" class="oe_highlight" attrs="{'invisible': ['|', ('match_type', '=', 'sets'), ('state', '!=', 'unstarted')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="unstarted,playing,done"/>
+                </header>
                 <group>
-                    <field name="winner_id"/>  <!-- invisible="1" -->
                     <field name="tournament_id"/>
-                    <field name="match_round"/> <!-- TODO create pretty name -->
+                    <field name="match_round"/><!-- TODO create pretty name -->
                     <field name="start_date" attrs="{'invisible': [('start_date', '=', False)]}"/>
                 </group>
-                <!-- <t-if winner_id == first_team_id class="winner"> TODO with opacity .5 for loser, font-weight 900 for winner-->
                 <group><field name="first_team_id"/></group>
                 <group><field name="second_team_id"/></group>
-                <field name="set_ids" mode="tree">
-                    <tree string="Sets" editable="true"> <!-- decoration-info="(move_check == False)" create="false"-->
-                        <field name="score_1"/>
-                        <field name="score_2"/>
-                    </tree>
-                </field>
-                <field name="next_match_id"/>
+                <group>
+                    <field name="score"/><!-- TODO add a widget -->
+                    <field name="color"/><!-- TODO add a widget -->
+                    <field name="winner_id" attrs="{'invisible': [('winner_id', '=', False)]}"/>
+                    <field name="next_match_id"/>
+                </group>
             </form>
         </field>
     </record>
@@ -42,12 +45,10 @@
         <field name="model">tournament.match</field>
         <field name="arch" type="xml">
             <kanban class="o_tournament_match_kanban" default_group_by="match_round" create="0" group_create="0" string="Match">
-                <field name="start_date"/>
                 <!-- <t-if winner_id == first_team_id class="winner"> TODO with opacity .5 for loser, font-weight 900 for winner-->
-                <field name="first_team_id"/> <!-- TODO or bye -->
-                <field name="second_team_id"/>
-                <field name="set_ids"/>
+                <field name="previous_match_ids"/>
                 <field name="color"/>
+                <field name="winner_id"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click">
@@ -60,29 +61,44 @@
                                     <t t-if="widget.deletable"><li><a type="delete">Delete</a></li></t>
                                     <!-- <li t-if="! record.active.value"><a name="toggle_active" type="object">Restore</a></li> -->
                                     <!-- <li t-if="record.active.value"><a name="toggle_active" type="object">Archive</a></li> -->
-                                    <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                    <!-- <li><ul class="oe_kanban_colorpicker" data-field="color"/></li> -->
                                 </ul>
                             </div>
                             <div class="oe_kanban_content">
-                                <div t-attf-class=""> 
+                                <div t-att-class="record.winner_id.raw_value ? 'o_tournament_match_' + (record.winner_id.raw_value[0] == record.first_team_id.raw_value[0] ? 'winner' : 'loser') : ''"> 
                                     <!-- <t t-if winner_id == first_team_id class="winner"> TODO with opacity .5 for loser, font-weight 900 for winner-->
-                                    <field name="first_team_id"/> <!-- TODO or bye -->
+                                    <t t-if="record.first_team_id.raw_value">
+                                        <field name="first_team_id"/> <!-- TODO or bye -->
+                                    </t>
+                                    <t t-else="">
+                                        <t t-if="!record.previous_match_ids.raw_value.length">
+                                            <span>bye</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span>To be defined</span>
+                                        </t>
+                                    </t>
                                 </div>
-                                <div>
-                                    <field name="second_team_id"/>
+                                <div t-att-class="record.winner_id.raw_value ? 'o_tournament_match_' + (record.winner_id.raw_value[0] == record.second_team_id.raw_value[0] ? 'winner' : 'loser') : ''">
+                                    <t t-if="record.second_team_id.raw_value">
+                                        <field name="second_team_id"/> <!-- TODO or bye -->
+                                    </t>
+                                    <t t-else="">
+                                        <t t-if="!record.previous_match_ids.raw_value.length">
+                                            <span>bye</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span>To be defined</span>
+                                        </t>
+                                    </t>
                                 </div>
                                 <div t-if="record.start_date">
                                 <!-- TODO color coding for time delays/soon to launch <t t-if="new Date(record.deadline.raw_value) &lt; (new Date())" t-set="red">oe_kanban_text_red</t>
                                     <span class="fa fa-clock-o"/> <span t-attf-class="#{red}"><i><field name="deadline"/></i></span> -->
                                     <field name="start_date"/>
                                 </div>
-                                <div>
-                                    <field name="set_ids" mode="tree">
-                                        <tree string="Sets" create="false" edit="false"> <!-- decoration-info="(move_check == False)" create="false"-->
-                                            <field name="score_1"/>
-                                            <field name="score_2"/>
-                                        </tree>
-                                    </field>
+                                <div t-if="record.score.raw_value != '[]'">
+                                    <field name="score" widget="match_score"/>
                                 </div>
                                 <!-- <div class="oe_kanban_bottom_left">
                                     <field name="priority" widget="priority"/>
@@ -155,7 +171,7 @@
         <field name="name">tournament.tree</field>
         <field name="model">tournament</field>
         <field name="arch" type="xml">
-            <tree editable="top" string="Tournament" quick_create="false" edit="false">
+            <tree string="Tournament">
                 <field name="name"/>
                 <field name="state"/>
             </tree>
@@ -183,7 +199,7 @@
                 <header>
                     <button type="object" name="action_open" states="draft" string="Open Inscriptions" class="oe_highlight"/>
                     <button type="object" name="action_close" states="open" string="Close Inscriptions" class="oe_highlight"/>
-                    <button type="object" name="action_reset_to_draft" states="open,closed,done" string="Reset to Draft"/>
+                    <button type="object" name="action_reset_to_draft" states="open,closed,done" string="Reset to Draft" confirm="Are you sure? This will delete all matches linked to this tournament. (If there were any)"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,open,closed,done"/>
                 </header>
                 <sheet>
@@ -198,17 +214,19 @@
                         <group>
                             <field name="match_type"/>
                             <field name="sets_to_win" attrs="{'invisible': [('match_type', '=', 'basic')]}"/>
+                            <field name="players_per_team"/>
+                            <field name="number_of_teams"/>
                         </group>
                         <group>
                             <field name="time_organisation"/>
-                            <field name="adapt_schedule"/>
-                            <field name="start_date"/>
-                            <field name="avg_match_time"/>
-                            <field name="field_amount"/>
+                            <div attrs="{'invisible': [('time_organisation', '=', False)]}">
+                                <field name="adapt_schedule"/>
+                                <field name="start_date"/>
+                                <field name="avg_match_time"/>
+                                <field name="field_amount"/>
+                            </div>
                         </group>
                         <group>
-                            <field name="players_per_team"/>
-                            <field name="number_of_teams"/>
                             <field name="team_ids" mode="tree"> <!-- options="{'reload_whole_on_button': true}" -->
                                 <tree string="Teams"> <!-- decoration-info="(move_check == False)" create="false"-->
                                     <field name="player_ids" invisible="1"/>
@@ -244,6 +262,7 @@
         <field name="arch" type="xml">
             <search string="Search Tournaments">
                 <field name="name"/>
+                <field name="state"/>
             </search>
         </field>
     </record>
@@ -258,9 +277,8 @@
             <p class="oe_view_nocontent_create">
                 Create a Tournament to get started !
             </p>
-            <p class="oe_view_nocontent">
-                Grrrr !
-            </p>
+            <!-- <p class="oe_view_nocontent">
+            </p> -->
         </field>
     </record>
 

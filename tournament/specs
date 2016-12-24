@@ -17,3 +17,4 @@ match states : draft, confirmed, playing, done, cancelled - handle bye/walkover
 
 more to come.
 
+To do: get the models right, upcoming matches, define (binary?) tree view
