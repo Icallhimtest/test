@@ -2,7 +2,7 @@
     background-color: lightgreen;
     color: black;
 }*/
-@tournament-kanban-background = #FFFFFF;
+@tournament-kanban-background: #FFFFFF;
 
 .o_tournament_match_kanban .o_tournament_match_loser {
     opacity: 0.5;
@@ -13,7 +13,8 @@
 .o_tournament_match_kanban .o_tournament_match_winner {
     font-weight: bold;
 }
-.o_kanban_views .o_tournament_match_kanban {
+
+.o_kanban_view.o_tournament_match_kanban {
     &.o_kanban_grouped {
         min-height: 100%;
         padding: 0 0px;
@@ -123,10 +124,15 @@
         &:nth-child(odd) {
             background-color: darken(@tournament-kanban-background, 3%);
         }
+        &:nth-child(n+2){
+            .o_kanban_record {
+                margin: calc(28*1px) 0 calc(28*1px) 0; // do a for loop as ugly hack ?
+            }
+        }
     }
 }
 
-.o_kanban_view .o_kanban_group:nth-child(odd)
+//.o_kanban_view .o_kanban_group:nth-child(odd)
 /*.o_kanban_view .oe_kanban_color_12 {
     background-color: grey;
 }

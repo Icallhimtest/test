@@ -15,13 +15,14 @@
     <record id="tournament_match_view_form" model="ir.ui.view">
         <field name="name">tournament.match.form</field>
         <field name="model">tournament.match</field>
+        <field name="priority">1</field>
         <field name="arch" type="xml">
             <form string="Match" create="false">
                 <field name="match_type" invisible="1"/>
                 <header>
-                    <button type="object" name="assign_winner_1" string="Team 1 won" class="oe_highlight" attrs="{'invisible': ['|', ('match_type', '=', 'sets'), ('state', '!=', 'unstarted')]}"/>
-                    <button type="object" name="assign_winner_2" string="Team 2 won" class="oe_highlight" attrs="{'invisible': ['|', ('match_type', '=', 'sets'), ('state', '!=', 'unstarted')]}"/>
-                    <field name="state" widget="statusbar" statusbar_visible="unstarted,playing,done"/>
+                    <button type="object" name="assign_winner_1" string="Team 1 won" class="oe_highlight" attrs="{'invisible': ['|', ('match_type', '=', 'sets'), ('state', '!=', 'confirmed')]}"/>
+                    <button type="object" name="assign_winner_2" string="Team 2 won" class="oe_highlight" attrs="{'invisible': ['|', ('match_type', '=', 'sets'), ('state', '!=', 'confirmed')]}"/>
+                    <field name="state" widget="statusbar" clickable="True" statusbar_visible="draft,confirmed,started,done"/>
                 </header>
                 <group>
                     <field name="tournament_id"/>
@@ -40,6 +41,34 @@
         </field>
     </record>
 
+    <record id="tournament_match_view_form_score" model="ir.ui.view">
+        <field name="name">tournament.match.form.score</field>
+        <field name="model">tournament.match</field>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <form string="Match Score" editable="1" edit="1">
+                <group>
+                    <field name="score"/><!-- TODO add a widget -->
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="tournament_match_score_action" model="ir.actions.act_window">
+        <field name="name">Match Score</field>
+        <field name="res_model">tournament.match</field>
+        <field name="view_type">tree</field>
+        <field name="view_mode">form</field>
+        <!-- <field name="view_id" ref="tournament_match_view_form_score"/> -->
+        <!-- <field name="views">[[False, "tree"], [False, "form"]]</field> -->
+        <!-- <field name="res_id" eval="active_id"/> -->
+        <field name="domain">[('id', '=', active_id)]</field>
+        <field name="target">current</field><!-- 
+        <field name="view_ids" 
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('tournament_match_view_form_score')})]"/> -->
+    </record>
+
     <record id="tournament_match_view_kanban" model="ir.ui.view">
         <field name="name">tournament.match.kanban</field>
         <field name="model">tournament.match</field>
@@ -51,13 +80,17 @@
                 <field name="winner_id"/>
                 <templates>
                     <t t-name="kanban-box">
+                        <!-- <button type="action" name="%(tournament_match_score_action)d" class="btn-link">Set Score</button> -->
                         <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click">
+
+                            <!-- <button type="object" name="tournament_match_score_action" class="btn-link">Set the fucking Score</button> -->
                             <div class="o_dropdown_kanban dropdown">
                                 <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" >
                                     <span class="fa fa-bars fa-lg"/>
                                 </a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                     <t t-if="widget.editable"><li><a type="edit">Edit</a></li></t>
+                                    <button type="action" name="%(tournament_match_score_action)d" class="btn-link">Set Score</button>
                                     <t t-if="widget.deletable"><li><a type="delete">Delete</a></li></t>
                                     <!-- <li t-if="! record.active.value"><a name="toggle_active" type="object">Restore</a></li> -->
                                     <!-- <li t-if="record.active.value"><a name="toggle_active" type="object">Archive</a></li> -->
@@ -65,6 +98,7 @@
                                 </ul>
                             </div>
                             <div class="oe_kanban_content">
+                                <button type="action" name="%(tournament_match_score_action)d" class="btn-link">Set Score</button>
                                 <div t-att-class="record.winner_id.raw_value ? 'o_tournament_match_' + (record.winner_id.raw_value[0] == record.first_team_id.raw_value[0] ? 'winner' : 'loser') : ''"> 
                                     <!-- <t t-if winner_id == first_team_id class="winner"> TODO with opacity .5 for loser, font-weight 900 for winner-->
                                     <t t-if="record.first_team_id.raw_value">
@@ -214,6 +248,7 @@
                         <group>
                             <field name="match_type"/>
                             <field name="sets_to_win" attrs="{'invisible': [('match_type', '=', 'basic')]}"/>
+                            <field name="points_per_set" attrs="{'invisible': [('match_type', '=', 'basic')]}"/>
                             <field name="players_per_team"/>
                             <field name="number_of_teams"/>
                         </group>

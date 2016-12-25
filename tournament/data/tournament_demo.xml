@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<odoo>
+	<record id="badminton" model="tournament">
+		<field name="name">Badminton Singles template</field>
+		<field name="match_type">sets</field>
+		<field name="players_per_team">1</field>
+	</record>
+
+
+	<record id="tournament_team_1" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('base.res_partner_address_3'), 0)]"/>
+	</record>
+	<record id="tournament_team_2" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('base.res_partner_address_4'), 0)]"/>
+	</record>
+	<record id="tournament_team_3" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('base.res_partner_address_5'), 0)]"/>
+	</record>
+	<record id="tournament_team_4" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('base.res_partner_address_10'), 0)]"/>
+	</record>
+	<record id="tournament_team_5" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('base.res_partner_address_11'), 0)]"/>
+	</record>
+	<record id="tournament_team_6" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('base.res_partner_address_13'), 0)]"/>
+	</record>
+	<record id="tournament_team_7" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('base.res_partner_address_14'), 0)]"/>
+	</record>
+	<record id="tournament_team_8" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('base.res_partner_address_15'), 0)]"/>
+	</record>
+	<record id="tournament_team_9" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('base.res_partner_address_16'), 0)]"/>
+	</record>
+	<record id="tournament_team_10" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('base.res_partner_address_17'), 0)]"/>
+	</record>
+</odoo>

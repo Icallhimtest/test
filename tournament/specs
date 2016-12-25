@@ -18,3 +18,14 @@ match states : draft, confirmed, playing, done, cancelled - handle bye/walkover
 more to come.
 
 To do: get the models right, upcoming matches, define (binary?) tree view
+
+
+
+To do list:
+
+do the pretty kanban tree view
+do a usable editable treeview to launch matches (score field with pencil to next point) tree view sorts by start date / round
+pretty editor for score from both views (kanban records need a "set score" button) do the auto-fill thing with points_per_set if first score is deterministic (care, allow invalid scores for abandons)
+make template tournaments per sport
+Handle the start time generation
+Englobe tournaments into other models to have multiple disciplines (singles, doubles, etc) And generate dates for this

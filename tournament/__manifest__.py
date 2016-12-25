@@ -14,11 +14,15 @@ Organise your tournament, have a complete schedule with match times ready to use
         """,
     'depends': ['base', 'mail', 'report'],
     'data': [
+        'data/tournament_data.xml',
         'security/tournament_security.xml',
         'security/ir.model.access.csv',
         # 'data/tournament_data.xml',
         'views/tournament_assets_backend.xml',
         'views/tournament_views.xml',
+    ],
+    'demo': [
+        'data/tournament_demo.xml',
     ],
     'application': True,
     'installable': True,
