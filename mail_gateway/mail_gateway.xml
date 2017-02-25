@@ -7,16 +7,16 @@
             <field name="type">imap</field>
             <field name="is_ssl" eval="True"/>
             <field name="port">993</field>
-            <field name="user">XXX</field>
-            <field name="password">XXXXXXXX</field>
-        </record> <!-- XXXXXXXX -->
+            <field name="user">dve</field>
+            <field name="password">XXX</field>
+        </record> <!-- XXX -->
         <record id="base.ir_mail_server_localhost0" model="ir.mail_server">
             <field name="name">smtp.openerp.com</field>
             <field name="smtp_host">smtp.openerp.com</field>
             <field name="smtp_port">2525</field>
             <field name="smtp_encryption">starttls</field>
-            <field name="smtp_user">XXX</field>
-            <field name="smtp_pass">XXXXXXXXX</field>
+            <field name="smtp_user">dve</field>
+            <field name="smtp_pass">XXX</field>
         </record>
         <record id="base.mail_catchall_domain" model="ir.config_parameter">
             <field name="key">mail.catchall.domain</field>

@@ -258,12 +258,21 @@
                         </group>
                         <group>
                             <field name="time_organisation"/>
-                            <div attrs="{'invisible': [('time_organisation', '=', False)]}">
-                                <field name="adapt_schedule"/>
-                                <field name="start_date"/>
-                                <field name="avg_match_time"/>
-                                <field name="field_amount"/>
-                            </div>
+                            <field name="adapt_schedule" attrs="{'invisible': [('time_organisation', '=', False)]}"/>
+                            <field name="avg_match_time" attrs="{'invisible': [('time_organisation', '=', False)]}"/>
+                            <field name="field_amount" attrs="{'invisible': [('time_organisation', '=', False)]}"/>
+                            <field name="date_range_ids" mode="tree" attrs="{'invisible': [('time_organisation', '=', False)]}" editable="bottom">
+                                <tree string="play times">
+                                    <field name="start"/>
+                                    <field name="end"/>
+                                </tree>
+                                <form string="play time">
+                                    <group>
+                                        <field name="start"/>
+                                        <field name="end"/>
+                                    </group>
+                                </form>
+                            </field>
                         </group>
                         <group>
                             <field name="team_ids" mode="tree"> <!-- options="{'reload_whole_on_button': true}" -->

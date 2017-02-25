@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import json
+from dateutil.relativedelta import relativedelta
+# import json
 import math
 import random
 
@@ -41,7 +42,13 @@ class Tournament(models.Model):
     # schedule related fields
     # need verification to check every field required (according to settings) is set correctly
     time_organisation = fields.Boolean(string='Schedule the Matches', help='Check this to have match start times generated automatically.')
-    start_date = fields.Datetime(string='Start Date')
+    # concurrent_tournaments = fields.Many2many(
+    #     'tournament', string='Concurrent Tournaments', domain=[('state', 'in', ['draft', 'open'])],
+    #     states={'closed': [('readonly', True)], 'done': [('readonly', True)]},
+    #     help="Other tournaments that might have the same participant(s) playing in them, "
+    #          "for which you want to avoid match time conflicts. "
+    #          "Those tournaments need to be in draft mode.")
+    date_range_ids = fields.One2many('tournament.date.range', 'tournament_id', string='Play Dates', help='Time periods matches can be played in.')
     # maybe add date end and second start to handle 2-day events (weekends)
     avg_match_time = fields.Integer(string='Estimated Match Time', readonly=True, states={'draft': [('readonly', False)]})
     adapt_schedule = fields.Boolean(
@@ -94,39 +101,49 @@ class Tournament(models.Model):
             if matches already exist (the tournament was reset to draft) warn that it will delete all existing matches.
         """
         self.ensure_one()
-        if self.number_of_teams < 2:
-            raise UserError(_('Not enough Participants'))
-        self._verify_players_per_team()
-        self._verify_players_unicity()
-        number_of_rounds = int(math.ceil(math.log(self.number_of_teams, 2)))
-        match_ids = []
-        for round_number in range(number_of_rounds):
-            for i in range(2 ** round_number):
-                # check if this works, or if I have to go through (0, 0, vals)
-                match = self.env['tournament.match'].create({
-                    'tournament_id': self.id,
-                    'match_round': -round_number - 1,
-                    'score': '[]',
-                })
-                match_ids.append(match.id)
-                if round_number > 0:
-                    match.next_match_id = match_ids[(match_ids.index(match.id) - 1) / 2]
+        tournaments_to_close = self
+        if self.time_organisation:
+            tournaments_to_close |= self.concurrent_tournaments
+        tournaments_to_close.generate_matches()
+        tournaments_to_close.write({'state': 'closed'})
 
-        # assign teams to matches
-        team_ids = self.team_ids.ids
-        random.shuffle(team_ids)
-        i = 0
-        for match_id in match_ids[(2 ** (number_of_rounds - 1) - 1):]:
-            match = self.env['tournament.match'].browse(match_id)
-            match.first_team_id = self.env['tournament.team'].browse(team_ids[i])
-            if self.number_of_teams > 2 ** (number_of_rounds - 1) + i:
-                match.second_team_id = self.env['tournament.team'].browse(team_ids[2 ** (number_of_rounds - 1) + i])
-            i += 1
-        self.match_ids.write({'state': 'confirmed'})
-        self.write({'state': 'closed'})
+    def generate_matches(self):
+        """ Generates all the matches according to requested settings and the corresponding tree linking them together.
+            if matches already exist (the tournament was reset to draft) warn that it will delete all existing matches.
+        """
+        for tournament in self:
+            tournament._verify_players_per_team()
+            tournament._verify_players_unicity()
+            number_of_rounds = int(math.ceil(math.log(tournament.number_of_teams, 2)))
+            if number_of_rounds < 1:
+                raise UserError(_('Not enough Participants for %s') % tournament.name)
+            if tournament.time_organisation:
+                tournament._verify_timing_possible(number_of_rounds)
+            match_ids = []
+            for round_number in range(number_of_rounds):
+                for i in range(2 ** round_number):
+                    # check if this works, or if I have to go through (0, 0, vals)
+                    match = self.env['tournament.match'].create({
+                        'tournament_id': tournament.id,
+                        'match_round': -round_number - 1,
+                        'score': '[]',
+                    })
+                    match_ids.append(match.id)
+                    if round_number > 0:
+                        match.next_match_id = match_ids[(match_ids.index(match.id) - 1) / 2]
+
+            # assign teams to matches
+            team_ids = tournament.team_ids.ids
+            random.shuffle(team_ids)
+            i = 0
+            for match_id in match_ids[(2 ** (number_of_rounds - 1) - 1):]:
+                match = self.env['tournament.match'].browse(match_id)
+                match.first_team_id = self.env['tournament.team'].browse(team_ids[i])
+                if tournament.number_of_teams > 2 ** (number_of_rounds - 1) + i:
+                    match.second_team_id = self.env['tournament.team'].browse(team_ids[2 ** (number_of_rounds - 1) + i])
+                i += 1
 
     def _verify_players_unicity(self):
-        self.ensure_one()
         player_list = []
         for team in self.team_ids:
             player_list += team.player_ids.ids
@@ -135,12 +152,42 @@ class Tournament(models.Model):
             raise ValidationError(_('Player "%s" is present in multiple teams') % self.env['res.partner'].browse(duplicate_ids[0]).name)
 
     def _verify_players_per_team(self):
-        self.ensure_one()
         if self.players_per_team:
             for team in self.team_ids:
                 if team.number_of_players != self.players_per_team:
                     raise UserError(_('Team "%s" does not have the required amount of players') % team.name)
 
+    def _verify_timing_possible(self, number_of_rounds):
+        # to improve with # fields (and imp message)
+        max_rounds = [int(d_range.duration * 60 / self.avg_match_time) for d_range in self.date_range_ids]
+        if number_of_rounds > max_rounds:
+            raise UserError(_('Tournament %s does not have enough play time') % self.name)
+
+    # @api.depends('winner_id') where do you come from ?
     def action_done(self):
         for tournament in self.filtered('winner_id'):
             tournament.write({'state': 'done'})
+
+
+class TournamentDateRange(models.Model):
+    _name = "tournament.date.range"
+
+    start = fields.Datetime(string='From', default=fields.Datetime.now)
+    end = fields.Datetime(string='To')
+    duration = fields.Float(string='Duration (hours)', computed='_compute_duration')
+    tournament_id = fields.Many2one('tournament', string='related tournament', ondelete='cascade')
+
+    @api.depends('start', 'end')
+    def _compute_duration(self):
+        difference = fields.Datetime.from_string(self.end) - fields.Datetime.from_string(self.start)
+        self.duration = difference.hours + difference.minutes / 60.0
+
+    @api.onchange('start')
+    def _onchange_start(self):
+        self.end = fields.Datetime.to_string(fields.Datetime.from_string(self.start) + relativedelta(hours=8))
+
+    # check if the onchange triggers before when we change the start date. or if always valid.error
+    @api.constrains('start', 'end')
+    def _check_start_before_end(self):
+        if self.end <= self.start:
+            raise ValidationError(_('"To" datetime needs to be after the "From" datetime.'))

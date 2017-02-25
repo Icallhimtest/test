@@ -5,3 +5,5 @@ access_tournament_team,tournament.team.user,model_tournament_team,tournament.gro
 access_tournament_team,tournament.team.manager,model_tournament_team,tournament.group_tournament_manager,1,1,1,1
 access_tournament_match,tournament.match.user,model_tournament_match,tournament.group_tournament_user,1,0,0,0
 access_tournament_match,tournament.match.manager,model_tournament_match,tournament.group_tournament_manager,1,1,1,1
+access_tournament_date_range,tournament.date.range.user,model_tournament_date_range,tournament.group_tournament_user,1,0,0,0
+access_tournament_date_range,tournament.date.range.manager,model_tournament_date_range,tournament.group_tournament_manager,1,1,1,1
