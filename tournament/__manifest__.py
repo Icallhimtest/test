@@ -24,6 +24,9 @@ Organise your tournament, have a complete schedule with match times ready to use
     'demo': [
         'data/tournament_demo.xml',
     ],
+    'qweb': [
+        "static/src/xml/tournament_templates.xml",
+    ],
     'application': True,
     'installable': True,
     'auto_install': False,

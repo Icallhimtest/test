@@ -19,6 +19,7 @@ class TournamentMatch(models.Model):
     tournament_id = fields.Many2one('tournament', string='Tournament', required=True, readonly=True)
     match_type = fields.Selection(related='tournament_id.match_type', readonly=True)
     points_per_set = fields.Integer(related='tournament_id.points_per_set')
+    sets_to_win = fields.Integer(related='tournament_id.sets_to_win')
     first_team_id = fields.Many2one('tournament.team', string='Team 1', readonly=True)
     second_team_id = fields.Many2one('tournament.team', string='Team 2', readonly=True)
     score = fields.Text(string='Score', default='[]') # need to make widget
@@ -127,7 +128,8 @@ class TournamentMatch(models.Model):
 
     def tournament_match_score_action(self):
         # import ipdb; ipdb.set_trace()
-        return self.env['ir.actions.act_window'].create({
+        # self.env['ir.actions.act_window'].create(
+        return {
             "type": "ir.actions.act_window",
             'name': _('Match Score'),
             'res_model': 'tournament.match',
@@ -135,10 +137,15 @@ class TournamentMatch(models.Model):
             'view_mode': 'form',
             # 'view_id': self.env.ref('tournament.tournament_match_view_form_score').id,
             'res_id': self.id,
-            'target': 'current',
+            'target': 'new',
+            'flags': {'form': {'options': {'mode': 'edit'}}},
             'view_ids': [(5, 0, 0),
                          (0, 0, {'view_mode': 'form', 'view_id': self.env.ref('tournament.tournament_match_view_form_score').id})]
-        })
+        }
+
+    def set_score(self, score):
+        self.ensure_one()
+        return self.write({'score': score})
     # <record id="" model="ir.actions.act_window">
     #     <field name="name">Match Score</field>
     #     <field name="res_model">tournament.match</field>
