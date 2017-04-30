@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="res_partner_view_form_participant" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="priority">80</field>
+        <field name="arch" type="xml">
+            <form string="Player">
+                <header>
+                    <!-- <button type="object" name="action_open" states="draft" string="Open Inscriptions" class="oe_highlight"/>
+                    <button type="object" name="action_close" states="open" string="Close Inscriptions" class="oe_highlight"/>
+                    <button type="object" name="action_reset_to_draft" states="open,closed,done" string="Reset to Draft" confirm="Are you sure? This will delete all matches linked to this tournament. (If there were any)"/> -->
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <!-- <button class="oe_stat_button" name="%(action_view_tournament_matches  )  d" icon="fa-ticket" states="closed,done" type="action" string="View Matches"/> -->
+                    </div>
+                    <div class="oe_title" id='title'>
+                        <label for="name" class="oe_edit_only"/>
+                        <h1 id="name"><field name="name" placeholder="Player name..."/></h1>
+                    </div>
+                    <group>
+                        <field name="is_player" invisible="1"/>
+                        <field name="gender" attrs="{'required': [('is_player', '=', True)]}" widget="radio"/>
+                        <field name="email"/>
+                        <field name="phone"/>
+                        <field name="company_id"/>
+                        <field name="country_id"/>
+                        <!-- <field name="next_match_id"/> -->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="res_partner_view_tree_participant" model="ir.ui.view">
+        <field name="name">res.partner.tree</field>
+        <field name="model">res.partner</field>
+        <field name="priority">80</field>
+        <field name="arch" type="xml">
+            <tree string="Players">
+                <field name="name"/>
+                <field name="gender"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <!-- <field name="next_match_id"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="tournament_player_view_search" model="ir.ui.view">
+        <field name="name">res.partner.search</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <search string="Search Tournaments">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

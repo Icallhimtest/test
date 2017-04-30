@@ -12,3 +12,8 @@ class Partner(models.Model):
     _inherit = 'res.partner'
 
     team_ids = fields.Many2many('tournament.team', string='Tournament Teams', readonly=True)
+    is_player = fields.Boolean('Participates in Tournaments')
+    gender = fields.Selection([
+    	('male', 'Man'),
+    	('female', 'Woman'),
+    ])

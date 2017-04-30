@@ -10,157 +10,6 @@
         sequence="100" parent="helpdesk.menu_helpdesk_root"
         groups="helpdesk.group_helpdesk_manager"/> -->
 
-
-    <!-- TOURNAMENT.MATCH -->
-    <record id="tournament_match_view_form" model="ir.ui.view">
-        <field name="name">tournament.match.form</field>
-        <field name="model">tournament.match</field>
-        <field name="priority">1</field>
-        <field name="arch" type="xml">
-            <form string="Match" create="false">
-                <field name="match_type" invisible="1"/>
-                <header>
-                    <button type="object" name="assign_winner_1" string="Team 1 won" class="oe_highlight" attrs="{'invisible': ['|', ('match_type', '=', 'sets'), ('state', '!=', 'confirmed')]}"/>
-                    <button type="object" name="assign_winner_2" string="Team 2 won" class="oe_highlight" attrs="{'invisible': ['|', ('match_type', '=', 'sets'), ('state', '!=', 'confirmed')]}"/>
-                    <field name="state" widget="statusbar" clickable="True" statusbar_visible="draft,confirmed,started,done"/>
-                </header>
-                <group>
-                    <field name="tournament_id"/>
-                    <field name="match_round"/><!-- TODO create pretty name -->
-                    <field name="start_date" attrs="{'invisible': [('start_date', '=', False)]}"/>
-                </group>
-                <group><field name="first_team_id"/></group>
-                <group><field name="second_team_id"/></group>
-                <group>
-                    <field name="score" widget="MatchScore"/>
-                    <field name="color"/><!-- TODO add a widget -->
-                    <field name="winner_id" attrs="{'invisible': [('winner_id', '=', False)]}"/>
-                    <field name="next_match_id"/>
-                </group>
-            </form>
-        </field>
-    </record>
-
-    <record id="tournament_match_view_form_score" model="ir.ui.view">
-        <field name="name">tournament.match.form.score</field>
-        <field name="model">tournament.match</field>
-        <field name="priority">99</field>
-        <field name="arch" type="xml">
-            <form string="Match Score" editable="1" edit="1">
-                <group>
-                    <field name="score" widget="MatchScore"/>
-                </group>
-            </form>
-        </field>
-    </record>
-
-    <record id="tournament_match_score_action" model="ir.actions.act_window">
-        <field name="name">Match Score</field>
-        <field name="res_model">tournament.match</field>
-        <field name="view_type">tree</field>
-        <field name="view_mode">form</field>
-        <!-- <field name="view_id" ref="tournament_match_view_form_score"/> -->
-        <!-- <field name="views">[[False, "tree"], [False, "form"]]</field> -->
-        <!-- <field name="res_id" eval="active_id"/> -->
-        <field name="domain">[('id', '=', active_id)]</field>
-        <field name="flags">[('id', '=', active_id)]</field>
-        <field name="target">new</field><!-- 
-        <field name="view_ids" 
-                   eval="[(5, 0, 0),
-                          (0, 0, {'view_mode': 'form', 'view_id': ref('tournament_match_view_form_score')})]"/> -->
-    </record>
-
-    <record id="tournament_match_view_kanban" model="ir.ui.view">
-        <field name="name">tournament.match.kanban</field>
-        <field name="model">tournament.match</field>
-        <field name="arch" type="xml">
-            <kanban class="o_tournament_match_kanban" default_group_by="match_round" create="0" group_create="0" string="Match">
-                <!-- <t-if winner_id == first_team_id class="winner"> TODO with opacity .5 for loser, font-weight 900 for winner-->
-                <field name="previous_match_ids"/>
-                <field name="color"/>
-                <field name="winner_id"/>
-                <field name="points_per_set"/>
-                <field name="sets_to_win"/>
-                <templates>
-                    <t t-name="kanban-box">
-                        <!-- <button type="action" name="%(tournament_match_score_action)d" class="btn-link">Set Score</button> -->
-                        <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click">
-
-                            <!-- <button type="object" name="tournament_match_score_action" class="btn-link">Set the fucking Score</button> -->
-                            <div class="o_dropdown_kanban dropdown">
-                                <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" >
-                                    <span class="fa fa-bars fa-lg"/>
-                                </a>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                    <t t-if="widget.editable"><li><a type="edit">Edit</a></li></t>
-                                    <!-- <button type="object" name="tournament_match_score_action" class="btn-link">Set Score</button> -->
-                                    <t t-if="widget.deletable"><li><a type="delete">Delete</a></li></t>
-                                    <!-- <li t-if="! record.active.value"><a name="toggle_active" type="object">Restore</a></li> -->
-                                    <!-- <li t-if="record.active.value"><a name="toggle_active" type="object">Archive</a></li> -->
-                                    <!-- <li><ul class="oe_kanban_colorpicker" data-field="color"/></li> -->
-                                </ul>
-                            </div>
-                            <div class="oe_kanban_content">
-                                <button class="btn-link o_kanban_match_score">Set Score</button>
-                                <button type="object" name="tournament_match_score_action" class="btn-link">Set Score 2</button>
-                                <div t-att-class="record.winner_id.raw_value ? 'o_tournament_match_' + (record.winner_id.raw_value[0] == record.first_team_id.raw_value[0] ? 'winner' : 'loser') : ''"> 
-                                    <!-- <t t-if winner_id == first_team_id class="winner"> TODO with opacity .5 for loser, font-weight 900 for winner-->
-                                    <t t-if="record.first_team_id.raw_value">
-                                        <field name="first_team_id"/> <!-- TODO or bye -->
-                                    </t>
-                                    <t t-else="">
-                                        <t t-if="!record.previous_match_ids.raw_value.length">
-                                            <span>bye</span>
-                                        </t>
-                                        <t t-else="">
-                                            <span>To be defined</span>
-                                        </t>
-                                    </t>
-                                </div>
-                                <div t-att-class="record.winner_id.raw_value ? 'o_tournament_match_' + (record.winner_id.raw_value[0] == record.second_team_id.raw_value[0] ? 'winner' : 'loser') : ''">
-                                    <t t-if="record.second_team_id.raw_value">
-                                        <field name="second_team_id"/> <!-- TODO or bye -->
-                                    </t>
-                                    <t t-else="">
-                                        <t t-if="!record.previous_match_ids.raw_value.length">
-                                            <span>bye</span>
-                                        </t>
-                                        <t t-else="">
-                                            <span>To be defined</span>
-                                        </t>
-                                    </t>
-                                </div>
-                                <div t-if="record.start_date">
-                                <!-- TODO color coding for time delays/soon to launch <t t-if="new Date(record.deadline.raw_value) &lt; (new Date())" t-set="red">oe_kanban_text_red</t>
-                                    <span class="fa fa-clock-o"/> <span t-attf-class="#{red}"><i><field name="deadline"/></i></span> -->
-                                    <field name="start_date"/>
-                                </div>
-                                <div t-if="record.score.raw_value != '[]'">
-                                    <field name="score" widget="match_score"/>
-                                </div>
-                                <!-- <div class="oe_kanban_bottom_left">
-                                    <field name="priority" widget="priority"/>
-                                </div>
-                                <div class="oe_kanban_bottom_right">
-                                    <t t-if="record.message_needaction_counter.raw_value">
-                                        <span class='oe_kanban_mail_new' title='Important Messages'><i class='fa fa-comments'/><t t-raw="record.message_needaction_counter.raw_value"/></span>
-                                    </t>
-                                    <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" t-att-title="record.user_id.value" width="24" height="24" class="oe_kanban_avatar pull-right"/>
-                                    <span class="o_helpdesk_sla_failed pull-right fa fa-times-circle" style="margin: 6px" t-attf-title="Failed SLA: {{record.sla_name.raw_value}}" t-if="record.sla_fail &amp;&amp; record.sla_fail.raw_value"></span>
-                                    <div class="pull-left" groups="base.group_user">
-                                        <field name="kanban_state" widget="kanban_state_selection"/>
-                                    </div>
-                                </div>  -->
-                            </div>
-                            <!-- <div class="oe_clear"></div> -->
-                        </div>
-                    </t>
-                </templates>
-                <!-- <field name="next_match_id"/> -->
-            </kanban>
-        </field>
-    </record>
-
    <!--  <record id="helpdesk_ticket_type_action" model="ir.actions.act_window">
         <field name="name">Ticket Type</field>
         <field name="res_model">helpdesk.ticket.type</field>
@@ -179,31 +28,6 @@
         sequence="1" parent="helpdesk.helpdesk_menu_config"
         groups="base.group_no_one"/> -->
 
-    <!-- TOURNAMENT.TEAM -->
-    <record id="tournament_team_view_form" model="ir.ui.view">
-        <field name="name">tournament.team.form</field>
-        <field name="model">tournament.team</field>
-        <field name="arch" type="xml">
-            <form string="Team">
-                <field name="number_of_players"/>
-                <field name="player_ids"/>
-                <field name="tournament_ids"/>
-            </form>
-        </field>
-    </record>
-
-    <record id="tournament_team_view_tree" model="ir.ui.view">
-        <field name="name">tournament.team.tree</field>
-        <field name="model">tournament.team</field>
-        <field name="arch" type="xml">
-            <tree string="team">
-                <field name="name"/>
-                <field name="number_of_players"/>
-                <!-- <field name="next_match_id"/> -->
-            </tree>
-        </field>
-    </record>
-
     <!-- TOURNAMENT -->
     <record id="tournament_view_tree" model="ir.ui.view">
         <field name="name">tournament.tree</field>
@@ -213,19 +37,6 @@
                 <field name="name"/>
                 <field name="state"/>
             </tree>
-        </field>
-    </record>
-
-    <record id="action_view_tournament_matches" model="ir.actions.act_window">
-        <field name="name">Matches</field>
-        <field name="res_model">tournament.match</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">kanban,form</field>
-        <field name="context">{'default_tournament_id': active_id}</field>
-        <field name="help" type="html">
-          <p class="oe_view_nocontent">
-            Oops ! It appears there aren't any matches (yet).
-          </p>
         </field>
     </record>
 
@@ -315,6 +126,8 @@
         </field>
     </record>
 
+    <!-- ACTIONS AND MENUS -->
+
     <record id="tournament_action_tree" model="ir.actions.act_window">
         <field name="name">Tournaments</field>
         <field name="res_model">tournament</field>
@@ -323,7 +136,42 @@
         <field name="search_view_id" ref="tournament_view_search"/>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
-                Create a Tournament to get started !
+                Create a tournament to get started !
+            </p>
+            <!-- <p class="oe_view_nocontent">
+            </p> -->
+        </field>
+    </record>
+
+    <record id="tournament_player_action_tree" model="ir.actions.act_window">
+        <field name="name">Players</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="tournament_player_view_search"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+                                      (0, 0, {'view_mode': 'tree', 'view_id': ref('res_partner_view_tree_participant')}),
+                                      (0, 0, {'view_mode': 'form', 'view_id': ref('res_partner_view_form_participant')})]"/>
+        <field name="domain">[('is_player', '=', True)]</field>
+        <field name="context">{'default_is_player': True}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create or import a few players to get started !
+            </p>
+            <!-- <p class="oe_view_nocontent">
+            </p> -->
+        </field>
+    </record>
+
+    <record id="tournament_team_action_tree" model="ir.actions.act_window">
+        <field name="name">Teams</field>
+        <field name="res_model">tournament.team</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="tournament_team_view_search"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create or import a few teams to get started !
             </p>
             <!-- <p class="oe_view_nocontent">
             </p> -->
@@ -331,7 +179,13 @@
     </record>
 
     <menuitem id="tournament_menu" action="tournament_action_tree"
-        sequence="10" parent="tournament.tournament_menu_root"/>
+        sequence="10" parent="tournament_menu_root"/>
+    <menuitem id="participant_menu" name="Participants"
+        sequence="20" parent="tournament_menu_root"/>
+    <menuitem id="player_menu" action="tournament_player_action_tree"
+        sequence="10" parent="participant_menu"/>
+    <menuitem id="team_menu" action="tournament_team_action_tree"
+        sequence="20" parent="participant_menu"/>
 <!-- 
     <menuitem id="helpdesk_tag_menu" action="helpdesk_tag_action"
         sequence="1" parent="helpdesk.helpdesk_menu_config"

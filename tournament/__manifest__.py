@@ -18,7 +18,10 @@ Organise your tournament, have a complete schedule with match times ready to use
         'security/tournament_security.xml',
         'security/ir.model.access.csv',
         # 'data/tournament_data.xml',
+        'views/res_partner_views.xml',
         'views/tournament_assets_backend.xml',
+        'views/tournament_match_views.xml',
+        'views/tournament_team_views.xml',
         'views/tournament_views.xml',
     ],
     'demo': [

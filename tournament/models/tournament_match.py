@@ -8,8 +8,11 @@ import random
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
+#fuck translations
+
 class TournamentMatch(models.Model):
     _name = "tournament.match"
+    _order = 'tournament_id, match_round, id'
 
     # # name_get method
     # def _default_tournament_id(self):
@@ -24,12 +27,24 @@ class TournamentMatch(models.Model):
     second_team_id = fields.Many2one('tournament.team', string='Team 2', readonly=True)
     score = fields.Text(string='Score', default='[]') # need to make widget
     winner_id = fields.Many2one('tournament.team', compute='_compute_winner_id', string='Winner', readonly=True, store=True)
-    match_round = fields.Integer(string='Round', help='Rounds go from -x to 0 for the final', readonly=True)
+    match_round = fields.Selection([
+        (0, 'Final'),
+        (-1, 'Semi-Final'),
+        (-2, 'Quarter-Final'),
+        (-3, '1/8th-Final'),
+        (-4, '1/16th-Final'),
+        (-5, '1/32th-Final'),
+        (-6, '1/64th-Final'),
+        (-7, '1/128th-Final'),
+        (-8, '1/256th-Final'),
+        (-9, '1/512th-Final'),
+        (-10, '1/1028-Final'),
+    ], string='Round', help='Rounds go from -x to 0 for the final', readonly=True, required=True)
     next_match_id = fields.Many2one('tournament.match', string='Next Match', readonly=True)
     previous_match_ids = fields.One2many('tournament.match', 'next_match_id', string='Previous Matches', readonly=True)
     color = fields.Integer(string='Color Index', compute="_compute_color")
     state = fields.Selection([
-        ('draft', 'Draft'),
+        ('draft', 'Draft'), # not sure draft's needed
         ('confirmed', 'Confirmed'),
         ('started', 'Started'),
         ('done', 'Done')], string='Match status', required=True, default='draft')
@@ -47,6 +62,13 @@ class TournamentMatch(models.Model):
         self.filtered(lambda match: match.state == 'confirmed').update({'color': 0})
         self.filtered(lambda match: match.state == 'started').update({'color': 6})
         self.filtered(lambda match: match.state == 'done').update({'color': 1})
+
+    def name_get(self):
+        res = []
+        round_names = dict(self._fields['match_round'].selection)
+        for match in self:
+            res.append((match.id, match.tournament_id.name + ' ' + round_names[match.match_round]))
+        return res
 
     def write(self, vals):
         res = super(TournamentMatch, self).write(vals)
@@ -68,6 +90,7 @@ class TournamentMatch(models.Model):
             #     match.state = 'done'
             #     match.prepare_next_match()
 
+    @api.depends('score')
     def _check_winner(self):
         """ Look at the score and assign a winner if enough sets have been played.
 
@@ -99,13 +122,13 @@ class TournamentMatch(models.Model):
             else:
                 match.state = 'started'
 
-    def assign_winner_1(self, team):
+    def assign_winner_1(self):
         self.ensure_one()
         if self.tournament_id.match_type == 'sets':
             raise UserError(_("Please describe the sets in order to assign a winner"))
         self.score = '[[1,0]]'
 
-    def assign_winner_2(self, team):
+    def assign_winner_2(self):
         self.ensure_one()
         if self.tournament_id.match_type == 'sets':
             raise UserError(_("Please describe the sets in order to assign a winner"))

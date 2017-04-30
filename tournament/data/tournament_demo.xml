@@ -6,8 +6,250 @@
 		<field name="players_per_team">1</field>
 	</record>
 
+	<!-- Probably a terrible idea to use companies as clubs :p -->
+    <record id="orneau_company" model="res.company">
+        <field name="name">Orneau BC</field>
+    </record>
 
-	<record id="tournament_team_1" model="tournament.team">
+	<record id="michael" model="res.partner">
+		<field name="name">Mika</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">mika@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_michael" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.michael'), 0)]"/>
+	</record>
+
+	<record id="romain" model="res.partner">
+		<field name="name">Romain</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">romain@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_romain" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.romain'), 0)]"/>
+	</record>
+
+	<record id="samuel" model="res.partner">
+		<field name="name">Sam</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">samuel@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_samuel" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.samuel'), 0)]"/>
+	</record>
+
+	<record id="roan" model="res.partner">
+		<field name="name">Roan</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">roan@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_roan" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.roan'), 0)]"/>
+	</record>
+
+	<record id="matthias" model="res.partner">
+		<field name="name">Matthias</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">matthias@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_matthias" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.matthias'), 0)]"/>
+	</record>
+
+	<record id="martin" model="res.partner">
+		<field name="name">Martin</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">martin@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_martin" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.martin'), 0)]"/>
+	</record>
+
+	<record id="benoit" model="res.partner">
+		<field name="name">Benoît</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">benoit@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_benoit" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.benoit'), 0)]"/>
+	</record>
+
+	<record id="guillaume" model="res.partner">
+		<field name="name">Guillaume</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">guillaume@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_guillaume" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.guillaume'), 0)]"/>
+	</record>
+
+	<record id="nicolas" model="res.partner">
+		<field name="name">Nico</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">nicolas@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_nicolas" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.nicolas'), 0)]"/>
+	</record>
+
+	<record id="yorick" model="res.partner">
+		<field name="name">Yorick</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">yorick@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_yorick" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.yorick'), 0)]"/>
+	</record>
+
+	<record id="emeline" model="res.partner">
+		<field name="name">Emeline</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">female</field>
+        <field name="email">emeline@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_emeline" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.emeline'), 0)]"/>
+	</record>
+
+	<record id="mathilde" model="res.partner">
+		<field name="name">Mathilde</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">female</field>
+        <field name="email">mathilde@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_mathilde" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.mathilde'), 0)]"/>
+	</record>
+
+	<record id="maxime" model="res.partner">
+		<field name="name">Max</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">maxime@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_maxime" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.maxime'), 0)]"/>
+	</record>
+
+	<record id="corentin" model="res.partner">
+		<field name="name">Corentin</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">corentin@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_corentin" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.corentin'), 0)]"/>
+	</record>
+
+	<record id="fabrice" model="res.partner">
+		<field name="name">Fabrice</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">fabrice@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_fabrice" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.fabrice'), 0)]"/>
+	</record>
+
+	<record id="remi" model="res.partner">
+		<field name="name">Rémi</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">remi@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_remi" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.remi'), 0)]"/>
+	</record>
+
+	<record id="denis" model="res.partner">
+		<field name="name">Denis</field>
+        <field name="company_id" ref="orneau_company"/>
+        <field name="customer" eval="False"/>
+        <field name="is_player" eval="True"/>
+        <field name="gender">male</field>
+        <field name="email">denis@orneau.example.com</field>
+        <field name="country_id" ref="base.be"/>
+        <field name="tz">Europe/Brussels</field>
+    </record>
+	<record id="tournament_team_denis" model="tournament.team">
+		<field name="player_ids" eval="[(4, ref('tournament.denis'), 0)]"/>
+	</record>
+
+	<!-- <record id="tournament_team_1" model="tournament.team">
 		<field name="player_ids" eval="[(4, ref('base.res_partner_address_3'), 0)]"/>
 	</record>
 	<record id="tournament_team_2" model="tournament.team">
@@ -36,5 +278,5 @@
 	</record>
 	<record id="tournament_team_10" model="tournament.team">
 		<field name="player_ids" eval="[(4, ref('base.res_partner_address_17'), 0)]"/>
-	</record>
+	</record> -->
 </odoo>

@@ -115,7 +115,7 @@ class Tournament(models.Model):
             tournament._verify_players_per_team()
             tournament._verify_players_unicity()
             number_of_rounds = int(math.ceil(math.log(tournament.number_of_teams, 2)))
-            if number_of_rounds < 1:
+            if number_of_rounds < 0:
                 raise UserError(_('Not enough Participants for %s') % tournament.name)
             if tournament.time_organisation:
                 tournament._verify_timing_possible(number_of_rounds)
@@ -125,12 +125,12 @@ class Tournament(models.Model):
                     # check if this works, or if I have to go through (0, 0, vals)
                     match = self.env['tournament.match'].create({
                         'tournament_id': tournament.id,
-                        'match_round': -round_number - 1,
+                        'match_round': -round_number,
                         'score': '[]',
                     })
                     match_ids.append(match.id)
                     if round_number > 0:
-                        match.next_match_id = match_ids[(match_ids.index(match.id) - 1) / 2]
+                        match.next_match_id = match_ids[(match_ids.index(match.id) - 1) / 2] #could be optimized by deducing index but shouldn't care
 
             # assign teams to matches
             team_ids = tournament.team_ids.ids
@@ -142,6 +142,7 @@ class Tournament(models.Model):
                 if tournament.number_of_teams > 2 ** (number_of_rounds - 1) + i:
                     match.second_team_id = self.env['tournament.team'].browse(team_ids[2 ** (number_of_rounds - 1) + i])
                 i += 1
+            self.env['tournament.match'].browse(match_ids).write({'state': 'confirmed'})
 
     def _verify_players_unicity(self):
         player_list = []

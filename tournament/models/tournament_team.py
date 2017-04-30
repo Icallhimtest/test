@@ -19,6 +19,7 @@ class TournamentTeam(models.Model):
     name = fields.Char(string='Name', compute='_compute_name', store=True)
     player_ids = fields.Many2many('res.partner', string='Players') # TODO: create res.partner inheritance.
     tournament_ids = fields.Many2many('tournament', string='Participated Tournaments', readonly=True, default=_default_tournament_ids)
+    next_match_id = fields.Many2one('tournament.match', string='Next match', readonly=True, compute='_compute_next_match_id')
     number_of_players = fields.Integer(string='Number of Players', compute='_compute_number_of_players', readonly=True, store=True)
 
     @api.depends('player_ids')
@@ -34,9 +35,14 @@ class TournamentTeam(models.Model):
             if not team.player_ids:
                 team.name = 'Empty Team'
             else:
-                result = ""
+                result = "(%s) " % len(team.player_ids)
                 for player in team.player_ids:
                     result += player.name.split(' ', 1)[0] + ", "
-                team.name = result
+                team.name = result[:-2]
+
+    def _compute_next_match_id(self):
+        for team in self:
+            team.next_match_id = self.env['tournament.match'].search(
+                domain=['&', ('state', 'in', ('confirmed', 'started')), '|', ('first_team_id', '=', team.id), ('second_team_id', '=', team.id)], limit=1).id
 
     #name_get method or computed name

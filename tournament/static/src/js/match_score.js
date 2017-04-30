@@ -1,4 +1,4 @@
-odoo.define('tournament.match_score', function (require) {
+    odoo.define('tournament.match_score', function (require) {
 "use strict";
 
 var core = require('web.core');
@@ -160,8 +160,8 @@ var MatchScore = Widget.extend({
         tournament_match.call('set_score', [[this.match_id], JSON.stringify(score)])
         .then(function(result) {
             if (result) {
-                // debugger;
-                // self.destroy() // doesn't work ! :'(
+                debugger;
+                self.getParent().destroy();
             }
         });
     }
