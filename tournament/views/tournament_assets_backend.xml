@@ -8,8 +8,8 @@
             <link rel="stylesheet" href="/account/static/src/less/account_journal_dashboard.less"/> -->
 
             <script type="text/javascript" src="/tournament/static/src/js/score_widget.js"></script>
-            <script type="text/javascript" src="/tournament/static/src/js/match_score.js"></script>
-            <script type="text/javascript" src="/tournament/static/src/js/match_kanban_view_handler.js"></script>
+            <!-- <script type="text/javascript" src="/tournament/static/src/js/match_score.js"></script> -->
+            <!-- <script type="text/javascript" src="/tournament/static/src/js/match_kanban_view_handler.js"></script> -->
             <!-- <script type="text/javascript" src="/account/static/src/js/account_payment_widget.js"></script>  -->
         </xpath>
     </template>

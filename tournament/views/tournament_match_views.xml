@@ -9,6 +9,8 @@
         <field name="arch" type="xml">
             <form string="Match" create="false">
                 <field name="match_type" invisible="1"/>
+                <field name="sets_to_win" invisible="1"/>
+                <field name="points_per_set" invisible="1"/>
                 <header>
                     <button type="object" name="assign_winner_1" string="Team 1 won" class="oe_highlight" attrs="{'invisible': ['|', ('match_type', '=', 'sets'), ('state', '!=', 'confirmed')]}"/>
                     <button type="object" name="assign_winner_2" string="Team 2 won" class="oe_highlight" attrs="{'invisible': ['|', ('match_type', '=', 'sets'), ('state', '!=', 'confirmed')]}"/>
@@ -28,7 +30,8 @@
                         <field name="start_date" attrs="{'invisible': [('start_date', '=', False)]}"/>
                     </group>
                     <group>
-                        <field name="score" widget="MatchScore"/>
+                        <!-- <field name="score" widget="score" t-attf-options="{'sets_to_win': {{ sets_to_win }}, 'points_per_set': {{ points_per_set }} }"/> -->
+                        <field name="score" widget="score"/>
                         <field name="color"/><!-- TODO add a widget -->
                         <field name="winner_id" attrs="{'invisible': [('winner_id', '=', False)]}"/>
                         <field name="next_match_id"/>
@@ -45,7 +48,7 @@
         <field name="arch" type="xml">
             <form string="Match Score" editable="1" edit="1">
                 <group>
-                    <field name="score" widget="MatchScore"/>
+                    <field name="score" widget="Score"/>
                 </group>
             </form>
         </field>
@@ -133,7 +136,7 @@
                                     <field name="start_date"/>
                                 </div>
                                 <div t-if="record.score.raw_value != '[]'">
-                                    <field name="score" widget="match_score"/>
+                                    <field name="score" widget="score"/>
                                 </div>
                                 <!-- <div class="oe_kanban_bottom_left">
                                     <field name="priority" widget="priority"/>

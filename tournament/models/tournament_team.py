@@ -43,6 +43,6 @@ class TournamentTeam(models.Model):
     def _compute_next_match_id(self):
         for team in self:
             team.next_match_id = self.env['tournament.match'].search(
-                domain=['&', ('state', 'in', ('confirmed', 'started')), '|', ('first_team_id', '=', team.id), ('second_team_id', '=', team.id)], limit=1).id
+                ['&', ('state', 'in', ('confirmed', 'started')), '|', ('first_team_id', '=', team.id), ('second_team_id', '=', team.id)], limit=1).id
 
     #name_get method or computed name

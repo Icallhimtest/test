@@ -112,11 +112,11 @@ class Tournament(models.Model):
             if matches already exist (the tournament was reset to draft) warn that it will delete all existing matches.
         """
         for tournament in self:
+            if tournament.number_of_teams < 2:
+                raise UserError(_('Not enough Participants for %s') % tournament.name)
             tournament._verify_players_per_team()
             tournament._verify_players_unicity()
             number_of_rounds = int(math.ceil(math.log(tournament.number_of_teams, 2)))
-            if number_of_rounds < 0:
-                raise UserError(_('Not enough Participants for %s') % tournament.name)
             if tournament.time_organisation:
                 tournament._verify_timing_possible(number_of_rounds)
             match_ids = []
