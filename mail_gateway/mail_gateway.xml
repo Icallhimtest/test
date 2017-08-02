@@ -7,7 +7,7 @@
             <field name="type">imap</field>
             <field name="is_ssl" eval="True"/>
             <field name="port">993</field>
-            <field name="user">XXX</field>
+            <field name="user">DVEEEE</field>
             <field name="password">XXXXXXXX</field>
         </record> <!-- XXXXXXXX -->
         <record id="base.ir_mail_server_localhost0" model="ir.mail_server">
@@ -15,7 +15,7 @@
             <field name="smtp_host">smtp.openerp.com</field>
             <field name="smtp_port">2525</field>
             <field name="smtp_encryption">starttls</field>
-            <field name="smtp_user">XXX</field>
+            <field name="smtp_user">DVEEEE</field>
             <field name="smtp_pass">XXXXXXXXX</field>
         </record>
         <record id="base.mail_catchall_domain" model="ir.config_parameter">
@@ -23,5 +23,15 @@
             <field name="value">odoo.com</field>
         </record>
     </data>
+    <record id="fetch_mail_server_dve" model="fetchmail.server">
+        <field name="name">imap.openerp.com</field>
+        <field name="type">imap</field>
+        <field name="server">imap.openerp.com</field>
+        <field name="type">imap</field>
+        <field name="is_ssl" eval="True"/>
+        <field name="port">900</field>
+        <field name="user">DVEEEE</field>
+        <field name="password">XXXXXXXX</field>
+    </record>
 </odoo>
     
