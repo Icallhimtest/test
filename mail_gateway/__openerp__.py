@@ -3,11 +3,12 @@
 
 
 {
-    'version': "0.1",
+    'version': "0.3",
     'name': 'mail_gateway',
     'depends': ['mail'],
     'data': [
         'mail_gateway.xml',
+        'mail_gateway2.xml',
     ],
     'auto_install': False,
 }
