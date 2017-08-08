@@ -6,6 +6,7 @@
     'version': "0.3",
     'name': 'mail_gateway',
     'depends': ['mail'],
+    'description': "dve testing",
     'data': [
         'mail_gateway.xml',
         'mail_gateway2.xml',
