@@ -9,6 +9,12 @@
         </record>
         <record id="dbo" model="res.partner">
             <field name="name">DBO</field>
+<<<<<<< HEAD
+=======
+        </record>
+        <record id="base.partner_root" model="res.partner">
+            <field name="name">Administrator2</field>
+>>>>>>> 9e8ff06... v6 + dbo
         </record>
     </data>
     <data noupdate="1">
