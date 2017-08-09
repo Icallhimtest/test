@@ -7,17 +7,11 @@
         <record id="dle" model="res.partner">
             <field name="name">DLE</field>
         </record>
-<<<<<<< HEAD
+        <record id="dve" model="res.partner">
+            <field name="name">DVE</field>
+        </record>
         <record id="dbo" model="res.partner">
             <field name="name">DBO</field>
-<<<<<<< HEAD
-=======
-        </record>
-=======
->>>>>>> d50b160... v5 + dle
-        <record id="base.partner_root" model="res.partner">
-            <field name="name">Administrator2</field>
->>>>>>> 9e8ff06... v6 + dbo
         </record>
     </data>
     <data noupdate="1">
