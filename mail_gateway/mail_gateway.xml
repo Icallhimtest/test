@@ -7,6 +7,9 @@
         <record id="dle" model="res.partner">
             <field name="name">DLE</field>
         </record>
+        <record id="dbo" model="res.partner">
+            <field name="name">DBO</field>
+        </record>
         <record id="base.partner_root" model="res.partner">
             <field name="name">Administrator2</field>
         </record>
