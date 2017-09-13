@@ -12,10 +12,6 @@ pyPdf==1.13
 pyserial==3.1.1
 Python-Chart==1.39
 
-fuckthisshit
-I'm gonna make everything craaaash sq  
-!#2@%´`£ùé€
-
 python-openid==2.2.5
 pytz==2016.7
 pyusb==1.0.0
