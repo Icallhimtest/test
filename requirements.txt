@@ -1,0 +1,34 @@
+#fg reksrfujsl 
+Babel==2.3.4  #€dsfq sdjfkl
+decorator==4.0.10  
+docutils==0.12
+ebaysdk==2.1.4
+feedparser==5.2.1
+gevent==1.1.2
+greenlet
+pyparsing==2.1.10
+pyPdf==1.13
+
+pyserial==3.1.1
+Python-Chart==1.39
+
+fuckthisshit
+I'm gonna make everything craaaash sq  
+!#2@%´`£ùé€
+
+python-openid==2.2.5
+pytz==2016.7
+pyusb==1.0.0
+PyYAML==3.12
+qrcode==5.3
+reportlab==3.3.0
+requests==2.11.1
+six==1.10.0
+suds-jurko==0.6     
+vatnumber==1.2
+vobject==0.9.3
+Werkzeug==0.11.11       #dsfjlkf
+wsgiref==0.1.2
+XlsxWriter==0.9.3
+xlwt==1.1.2
+xlrd==1.0.0
