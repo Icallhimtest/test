@@ -1,4 +1,4 @@
-[submodule "OCA/social"]
-	path = OCA/social
-	url = git@github.com:OCA/social.git
-	branch = rafaelbn-patch-1
+[submodule "OCA/report-print-send2"]
+	path = OCA/report-print-send2
+	url = git@github.com:OCA/report-print-send.git
+	branch = 10.0
