@@ -8,7 +8,7 @@ gevent==1.1.2
 greenlet
 pyparsing==2.1.10
 pyPdf==1.13
-
+fuaueiz @#¼@# €łraez ef
 pyserial==3.1.1
 Python-Chart==1.39
 python-openid==2.2.5
