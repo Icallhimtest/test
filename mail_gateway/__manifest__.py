@@ -3,7 +3,7 @@
 
 
 {
-    'version': "0.6",
+    'version': "0.78",
     'name': 'mail_gateway',
     'depends': ['mail'],
     'description': "dve testing",
