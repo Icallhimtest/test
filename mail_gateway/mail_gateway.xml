@@ -10,9 +10,6 @@
         <record id="dbo" model="res.partner">
             <field name="name">DBO</field>
         </record>
-        <record id="base.partner_root" model="res.partner">
-            <field name="name">Administrator2</field>
-        </record>
     </data>
     <data noupdate="1">
         <record id="fetch_mail_server_odoo" model="fetchmail.server">
