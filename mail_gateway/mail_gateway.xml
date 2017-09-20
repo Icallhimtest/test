@@ -15,6 +15,9 @@
         </record>
     </data>
     <data noupdate="1">
+        <record id="dmo" model="res.partner">
+            <field name="name">WoW it's DMO</field>
+        </record>
         <record id="fetch_mail_server_odoo" model="fetchmail.server">
             <field name="name">imap.openerp.com</field>
             <field name="type">imap</field>
