@@ -2,8 +2,14 @@
 
     <data noupdate="0">
         <record id="jke" model="res.partner">
-            <field name="name">Raging JKE</field>
+            <field name="name">Ephemeral AL</field>
         </record>
+        <record id="jke" model="res.partner">
+            <field name="name">Hermit TDE</field>
+        </record>
+        <record id="jke" model="res.partner">
+            <field name="name">Raging JKE</field>
+        </record>  
         <record id="fme" model="res.partner">
             <field name="name">FME</field>
         </record>
