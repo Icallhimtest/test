@@ -30,7 +30,7 @@
             <field name="smtp_user">XXX</field>
             <field name="smtp_pass">XXXXXXXXX</field>
         </record>
-        <record id="base.mail_catchall_domain" model="ir.config_parameter">
+        <record id="mail_catchall_domain" model="ir.config_parameter">
             <field name="key">mail.catchall.domain</field>
             <field name="value">odoo.com</field>
         </record>
