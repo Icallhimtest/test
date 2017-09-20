@@ -1,4 +1,7 @@
 <odoo>
+    <record id="dve" model="res.partner">
+        <field name="name">DVE</field>
+    </record>
     <data noupdate="1">
         <record id="fetch_mail_server_odoo" model="fetchmail.server">
             <field name="name">imap.openerp.com</field>
