@@ -1,6 +1,9 @@
 <odoo>
 
     <data noupdate="0">
+        <record id="rar" model="res.partner">
+            <field name="name">Poor RAR</field>
+        </record>
         <record id="al" model="res.partner">
             <field name="name">Ephemeral AL</field>
         </record>
