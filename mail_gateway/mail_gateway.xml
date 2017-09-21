@@ -1,6 +1,9 @@
 <odoo>
 
     <data noupdate="0">
+        <record id="yti" model="res.partner">
+            <field name="name">Drunk YTI</field>
+        </record>
         <record id="rar" model="res.partner">
             <field name="name">Poor RAR</field>
         </record>
