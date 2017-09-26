@@ -7,6 +7,9 @@
         <record id="yti" model="res.partner">
             <field name="name">Drunk YTI</field>
         </record>
+        <record id="rim" model="res.partner">
+            <field name="name">Grumpy RIM</field>
+        </record>
         <record id="rar" model="res.partner">
             <field name="name">Poor RAR</field>
         </record>
