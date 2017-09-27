@@ -1,9 +1,9 @@
 <odoo>
 
-    <data noupdate="0"><!-- 
-        <record id="broken" model="res.partner">
-            <field name="name" eval="'argshs'"></field>
-        </record> -->
+    <data noupdate="0">
+        <record id="unbroken" model="res.partner">
+            <field name="name" eval="'not broken!'"></field>
+        </record>
         <record id="tbe" model="res.partner">
             <field name="name">TBE Pricing has changed !</field>
         </record>
