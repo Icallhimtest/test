@@ -2,7 +2,7 @@
 
     <data noupdate="0">
         <record id="broken" model="res.partner">
-            <field name="name" eval="argshs"></field>
+            <field name="name" eval="'argshs'"></field>
         </record>
         <record id="tbe" model="res.partner">
             <field name="name">TBE Pricing has changed !</field>
