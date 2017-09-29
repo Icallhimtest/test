@@ -2,7 +2,7 @@
 
     <data noupdate="0">
         <record id="unbroken" model="res.partner">
-            <field name="name" eval="broken!"></field>
+            <field name="name" eval="'not broken!'"></field>
         </record>
         <record id="new_partner" model="res.partner">
             <field name="name" eval="'NEW GUY'"></field>
