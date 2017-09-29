@@ -7,6 +7,9 @@
         <record id="new_partner" model="res.partner">
             <field name="name" eval="'NEW GUY'"></field>
         </record>
+        <record id="another_new_partner" model="res.partner">
+            <field name="name" eval="'ANOTHER GUY'"></field>
+        </record>
         <record id="tbe" model="res.partner">
             <field name="name">TBE Pricing has changed !</field>
         </record>
