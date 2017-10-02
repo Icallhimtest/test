@@ -3,10 +3,9 @@
 
 
 {
-    'version': "0.108",
+    'version': "0.109",
     'name': 'mail_gateway',
     'depends': ['mail'],
-    'description': "dve testing",
     'data': [
         'mail_gateway.xml',
     ],
