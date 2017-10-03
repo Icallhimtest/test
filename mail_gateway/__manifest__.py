@@ -3,9 +3,10 @@
 
 
 {
-    'version': "0.113",
+    'version': "0.114",
     'name': 'mail_gateway',
     'depends': ['mail'],
+    'description': 'does amazing things',
     'data': [
         'mail_gateway.xml',
     ],
