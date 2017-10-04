@@ -5,6 +5,7 @@
 {
     'name': 'mail_gateway',
     'depends': ['mail'],
+    'description': 'tralala',
     'data': [
         'mail_gateway.xml',
     ],
