@@ -3,10 +3,12 @@
 
 
 {
+    'version': 1,
     'name': 'mail_gateway',
     'depends': ['mail'],
     'data': [
         'mail_gateway.xml',
     ],
+    'description': 'Lovely Lady Love',
     'auto_install': False,
 }
