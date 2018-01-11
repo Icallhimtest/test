@@ -2,3 +2,8 @@
 	path = OCA/social
 	url = git@github.com:OCA/social.git
 	branch = 10.0
+
+[submodule "xubiuit/odoo_web_login"]
+	path = xubiuit/odoo_web_login
+	url = git@github.com:xubiuit/odoo_web_login.git
+	branch = 10.0
