@@ -1,0 +1,4 @@
+[submodule "vimit/project1_customiz"]
+	path = vimit/project1_customiz
+	url = git@github.com:vimit/project1_customiz.git
+	branch = master
