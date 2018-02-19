@@ -13,5 +13,5 @@
 	branch = master
 [submodule "dve/repo3"]
 	path = dve/repo3
-	url = https://github.com/Icallhimtest/repo3.git
+	url = git@github.com:Icallhimtest/repo3.git
 	branch = master
