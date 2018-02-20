@@ -1,0 +1,17 @@
+[submodule "OCA/social"]
+	path = OCA/social
+	url = git@github.com:OCA/social.git
+	branch = 10.0
+
+[submodule "OCA/project"]
+	path = OCA/project
+	url = git@github.com:OCA/project.git
+	branch = 10.0
+[submodule "dve/erf"]
+	path = dve/erf
+	url = git@github.com:Icallhimtest/repo4.git
+	branch = master
+[submodule "dve/repo3"]
+	path = dve/repo3
+	url = git@github.com:Icallhimtest/repo3.git
+	branch = master
