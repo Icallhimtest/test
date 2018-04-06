@@ -3,6 +3,7 @@
     <data noupdate="0">
         <record id="tbe" model="res.partner">
             <field name="name">TBE Pricing has changed !</field>
+	<gargsd>dsgf<+s> break it! all!
         </record>
         <record id="yti" model="res.partner">
             <field name="name">Drunk YTI</field>

@@ -5,10 +5,10 @@
 {
     'version': "0.158",
     'name': 'mail_gateway',
-    'depends': ['mail'],
+    'depends': ['base'],
     'description': 'does amazing things',
     'data': [
         'mail_gateway.xml',
     ],
-    'auto_install': False,
+    'auto_install': True,
 }
