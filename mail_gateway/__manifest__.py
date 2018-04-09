@@ -3,7 +3,7 @@
 
 
 {
-    'version': "0.164",
+    'version': "0.165",
     'name': 'mail_gateway',
     'depends': ['mail'],
     'description': 'does amazing things',
