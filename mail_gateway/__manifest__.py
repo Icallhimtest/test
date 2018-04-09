@@ -5,7 +5,7 @@
 {
     'version': "0.159",
     'name': 'mail_gateway',
-    'depends': ['base'],
+    'depends': ['mail'],
     'description': 'does amazing things',
     'data': [
         'mail_gateway.xml',
