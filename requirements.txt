@@ -1,1 +1,2 @@
+-e git+https://github.com/amigrave/chopsticks.git@odoo#egg=chopsticks
 werkzeug==0.12.2
