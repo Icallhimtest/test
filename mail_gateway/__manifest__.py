@@ -6,6 +6,7 @@
     'version': "0.170",
     'name': 'mail_gateway',
     'depends': ['mail', 'test'],
+    'summary': 'dve\'s garbage module that sends mails',
     'description': 'does amazing things',
     'data': [
         'mail_gateway.xml',
