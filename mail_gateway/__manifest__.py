@@ -3,21 +3,9 @@
 
 
 {
-    'version': "0.13",
+    'version': "0.131",
     'name': 'mail_gateway',
     'depends': ['mail'],
-    'description': 'does amazing things',
-    'data': [
-        'mail_gateway.xml',
-    'description': 'does amazing things',
-    'data': [
-        'mail_gateway.xml',
-    'description': 'does amazing things',
-    'data': [
-        'mail_gateway.xml',
-    'description': 'does amazing things',
-    'data': [
-        'mail_gateway.xml',
     'description': 'does amazing things',
     'data': [
         'mail_gateway.xml',
