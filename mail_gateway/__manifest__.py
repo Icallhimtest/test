@@ -3,7 +3,7 @@
 
 
 {
-    'version': "0.170",
+    'version': "0.174",
     'name': 'mail_gateway',
     'depends': ['mail', 'test'],
     'summary': 'dve\'s garbage module that sends mails',

@@ -35,8 +35,8 @@
             <field name="name">DBO</field>
         </record>
         <record id="jem" model="res.partner">
-            <field name="name">j'aime j'aime jem(e)</field>
-        </record>
+		<field name="name">j'aime j'aime jem(e)</field>
+	</record>
     </data>
     <data noupdate="1">
         <record id="dmo" model="res.partner">
@@ -52,17 +52,13 @@
             <field name="user">XXX</field>
             <field name="password">XXXXXXXX</field>
         </record> <!-- XXXXXXXX -->
-        <record id="base.ir_mail_server_localhost0" model="ir.mail_server">
+        <record id="ir_mail_server_localhost0" model="ir.mail_server">
             <field name="name">smtp.openerp.com</field>
             <field name="smtp_host">smtp.openerp.com</field>
             <field name="smtp_port">2525</field>
             <field name="smtp_encryption">starttls</field>
             <field name="smtp_user">XXX</field>
             <field name="smtp_pass">XXXXXXXXX</field>
-        </record>
-        <record id="mail_catchall_domain" model="ir.config_parameter">
-            <field name="key">mail.catchall.domain</field>
-            <field name="value">odoo.com</field>
         </record>
     </data>
 </odoo>
