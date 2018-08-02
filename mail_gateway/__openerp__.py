@@ -9,6 +9,6 @@
     'data': [
         'mail_gateway.xml',
     ],
-    'version': '0.2',
+    'version': '0.3',
     'auto_install': False,
 }
