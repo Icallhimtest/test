@@ -3,7 +3,7 @@
 
 
 {
-    'version': "13",
+    'version': "14",
     'name': 'mail_gateway',
     'depends': ['mail'],
     'data': [
