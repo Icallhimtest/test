@@ -1,1 +1,3 @@
+--find-links https://github.com/focusate/num2words/archive/7639f5a8205f4af647c868c81913a9ef89ad0c68.zip#egg=num2words-0.5.7+git.7639f5a num2words==0.5.7+git.7639f5a
 twine
+
