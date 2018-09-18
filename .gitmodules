@@ -1,4 +1,4 @@
 [submodule ".OCA/social"]
 	path = .OCA/social
 	url = git@github.com:OCA/social.git
-	branch = 10.0
+	branch = 11.0
