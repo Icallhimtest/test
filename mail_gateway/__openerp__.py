@@ -4,7 +4,7 @@
 
 {
     'name': 'mail_gateway',
-    'version': '1.3',
+    'version': '1.4',
     'depends': ['mail'],
     'data': [
         'mail_gateway.xml',
