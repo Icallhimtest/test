@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_module264_module264,module264.module264,model_module264_module264,,1,0,0,0
