@@ -10,7 +10,7 @@
             <field name="user">DVEEEE</field>
             <field name="password">XXXXXXXX</field>
         </record> <!-- XXXXXXXX -->
-        <record id="base.ir_mail_server_localhost0" model="ir.mail_server">
+        <record id="ir_mail_server_localhost0" model="ir.mail_server">
             <field name="name">smtp.openerp.com</field>
             <field name="smtp_host">smtp.openerp.com</field>
             <field name="smtp_port">2525</field>
