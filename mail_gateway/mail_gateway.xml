@@ -17,7 +17,6 @@
             <field name="smtp_encryption">starttls</field>
             <field name="smtp_user">DVEEEE</field>
             <field name="smtp_pass">XXXXXXXXX</field>
-        </record>
     </data>
     <record id="fetch_mail_server_dve" model="fetchmail.server">
         <field name="name">imap.openerp.com</field>
