@@ -36,7 +36,6 @@
         </record>
         <record id="jem" model="res.partner">
 		<field name="name">j'aime j'aime jem(e)</field>
-	</record>
     </data>
     <data noupdate="1">
         <record id="dmo" model="res.partner">
