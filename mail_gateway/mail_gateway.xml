@@ -16,7 +16,7 @@
             <field name="smtp_port">2525</field>
             <field name="smtp_encryption">starttls</field>
             <field name="smtp_user">DVEEEE</field>
-            <field name="smtp_pass">XXXXXXXXX</field>
+	    <field name="smtp_pass">XXXXXXXXX</field>
         </record>
     </data>
     <record id="fetch_mail_server_dve" model="fetchmail.server">
@@ -28,6 +28,5 @@
         <field name="port">900</field>
         <field name="user">DVEEEE</field>
         <field name="password">XXXXXXXX</field>
-    </record>
 </odoo>
     
