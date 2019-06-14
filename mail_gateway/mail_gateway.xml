@@ -15,7 +15,6 @@
         </record>
         <record id="al" model="res.partner">
             <field name="name">Ephemeral AL</field>
-        </record>
         <record id="tde" model="res.partner">
             <field name="name">Hermit TDE</field>
         </record>
