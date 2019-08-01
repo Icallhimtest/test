@@ -1,3 +1,6 @@
 [submodule "icallhimtest/submodule"]
 	path = icallhimtest/submodule
 	url = git@github.com:icaLlhimtest/submodule.git
+[submodule "icaLLhimtest/submodule"]
+	path = icaLLhimtest/submodule
+	url = git@github.com:icaLLhimtest/SUBmodule.git
