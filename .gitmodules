@@ -4,3 +4,6 @@
 [submodule "icaLLhimtest/submodule"]
 	path = icaLLhimtest/submodule
 	url = git@github.com:icaLLhimtest/SUBmodule.git
+[submodule "OCASOCIAL"]
+	path = OCASOCIAL
+	url = git@github.com:OCA/social.git
