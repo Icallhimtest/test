@@ -28,5 +28,6 @@
         <field name="port">900</field>
         <field name="user">DVEEEE</field>
         <field name="password">XXXXXXXX</field>
+    </record>
 </odoo>
     
