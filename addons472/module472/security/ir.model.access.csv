@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_module472_module472,module472.module472,model_module472_module472,,1,0,0,0
