@@ -1,3 +1,4 @@
 [submodule "test"]
 	path = test
 	url = git@github.com:Icallhimtest/test.git
+	branch = app-fl_birthday_wish-0
